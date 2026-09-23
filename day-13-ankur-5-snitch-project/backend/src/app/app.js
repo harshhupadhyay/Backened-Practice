@@ -6,7 +6,6 @@ const app = express()
 app.use(express.json())
 app.use(cookiePraser())
 
-
 app.use('/api/auth',router)
 
 

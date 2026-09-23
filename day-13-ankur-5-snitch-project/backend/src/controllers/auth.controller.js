@@ -201,6 +201,8 @@ export const refresh = async (req, res) => {
   }
 }
 
+//get me api  for fetching all
+
 export const getMe =async(req,res)=>{
 
   const {userId,role} = req.user
