@@ -16,7 +16,6 @@ export const authenticateMiddleware = async (req, res, next) => {
     const decode = readAccessToken(accessToken)
     req.user = decode
     next()
-
   } catch (error) {
 
     res.status(401).json({
