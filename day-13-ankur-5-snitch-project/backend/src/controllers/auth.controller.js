@@ -136,7 +136,7 @@ export const refresh = async (req, res) => {
   const refreshtoken = req.cookies.refreshToken
   if (!refreshtoken) {
     return res.status(401).json({
-      message: "Request token  is required"
+      message: "Refresh token  is required"
     })
   }
 
