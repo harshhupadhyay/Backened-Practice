@@ -31,6 +31,8 @@ uploads/
 .eslintcache
 .DS_Store
 Thumbs.db
+__MACOSX/
+._*
 .idea/
 .vscode/
 
