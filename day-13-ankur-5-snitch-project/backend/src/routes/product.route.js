@@ -1,9 +1,8 @@
 import { json, Router } from 'express'
 import { authenticateMiddleware } from '../middleware/auth.middleware.js'
-import { createProduct } from '../controllers/product.controller.js'
-import multer from 'multer'
+import { createProduct, getMeProduct } from '../controllers/product.controller.js'
 import { createProductValidator } from '../validators/productValidator.js'
-
+import multer from 'multer'
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -49,7 +48,7 @@ routes.post('/',
     try {
       //If req.body.price exists, convert it from a JSON string into a JavaScript array.
       req.body?.price && (req.body.price = JSON.parse(req.body.price))
-      
+
       //If req.body.sizes exists, convert it from a JSON string into a JavaScript array.
       req.body?.sizes && (req.body.sizes = JSON.parse(req.body.sizes))
       next()
@@ -62,8 +61,10 @@ routes.post('/',
   createProductValidator,
 
   createProduct)
+  
 
 
+routes.get('/', authenticateMiddleware, getMeProduct)
 
 
 export default routes
