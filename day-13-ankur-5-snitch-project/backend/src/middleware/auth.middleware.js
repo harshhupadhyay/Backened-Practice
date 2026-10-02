@@ -1,5 +1,9 @@
 import { readAccessToken } from "../utils/auth.js"
 
+
+//yeh bas check karega request ke andar valid request token hai ya nhi
+
+
 export const authenticateMiddleware = async (req, res, next) => {
 
 
@@ -25,3 +29,16 @@ export const authenticateMiddleware = async (req, res, next) => {
   }
 
 }
+
+export const authenticalSeller = (req, res, next) => {
+    // agar  token seller ka token nhi hai toh  aage nhi jayega
+
+    if (req.user.role !== "seller") {
+      return res.status(403).json({
+        message: "user is not authorized to  do this action"
+      })
+    }
+
+    next()
+
+  }

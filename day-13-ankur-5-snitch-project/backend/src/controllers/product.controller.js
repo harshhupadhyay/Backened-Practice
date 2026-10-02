@@ -42,14 +42,29 @@ export const createProduct = async (req, res) => {
 
 }
 
-export const getMeProduct = async(req,res)=>{
+export const listAllProducts = async (req, res) => {
 
-  const product = await productModel.find()
- 
+  const product = await productModel.find({
+    published: true
+  })
+
   return res.status(200).json({
-    message:"All product are fetched",
+    message: "All product are fetched",
     data: product
   })
+}
+
+export const listAllProductToSeller = async (req, res) => {
+
+  const product = await productModel.find({})
+
+  return res.status(200).json({
+    message: "All products fetched successfully",
+    data: {
+      products
+    }
+  })
+
 }
 
 export const unlistProduct = async (req, res) => {
@@ -64,7 +79,7 @@ export const unlistProduct = async (req, res) => {
       message: "product is not found by id"
     })
   }
-// –––––––––––––––––– make product unPublished –––––––––––––––––––––
+  // –––––––––––––––––– make product unPublished –––––––––––––––––––––
   await productModel.findOneAndUpdate(id, {
     published: false
   })
@@ -72,5 +87,29 @@ export const unlistProduct = async (req, res) => {
   return res.status(200).json({
     message: "Product unpublished successfully"
   })
+
+}
+
+export const listProduct = async (req, res) => {
+
+  const { id } = req.params
+
+  const product = await productModel.findOne(id)
+
+  if (!product) {
+    return res.status(404).json({
+      message: "product not found by id"
+    })
+  }
+
+  await productModel.findOneAndUpdate(id, {
+    published: true
+  })
+
+  return res.status(200).json({
+    message: "Product published successfully"
+  })
+
+
 
 }

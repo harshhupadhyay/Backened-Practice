@@ -1,8 +1,12 @@
-import { json, Router } from 'express'
-import { authenticateMiddleware } from '../middleware/auth.middleware.js'
-import { createProduct, getMeProduct } from '../controllers/product.controller.js'
-import { createProductValidator } from '../validators/productValidator.js'
+import { Router } from 'express'
+import { authenticalSeller, authenticateMiddleware } from '../middleware/auth.middleware.js'
+import { createProduct, listAllProducts, listAllProductToSeller, listProduct, unlistProduct } from '../controllers/product.controller.js'
+import { createProductValidator, listProductValidator, unlistProductValidator } from '../validators/productValidator.js'
 import multer from 'multer'
+import router from './user.routes.js'
+
+
+
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -24,23 +28,12 @@ const routes = Router()
  * req.body=>{title,description:price:{amount,currency},sizes:[{size,stock},{si–ze,stock}]}
  */
 routes.post('/',
-
   // check if the user authenticated or not?
-  authenticateMiddleware,
+  authenticateMiddleware, authenticalSeller,
 
+  // required for reading the data from req.body if the formate is form-data(multipart-form-data)
 
-  (req, res, next) => {
-    // agar  token seller ka token nhi hai toh  aage nhi jayega
-
-    if (req.user.role !== "seller") {
-      return res.status(403).json({
-        message: "user is not authorized to create the product"
-      })
-    }
-
-    next()
-    // required for reading the data from req.body if the formate is form-data(multipart-form-data)
-  }, upload.array("images"),
+  upload.array("images"),
 
   (req, res, next) => {
 
@@ -56,15 +49,48 @@ routes.post('/',
     } catch (error) {
       res.status(400).json({ message: "Invalid price or sizes format" })
     }
-
   },
   createProductValidator,
-
   createProduct)
-  
 
 
-routes.get('/', authenticateMiddleware, getMeProduct)
+/**
+ * @method GET
+ * @route /api/product
+ * @description Read all the published products from the DB
+ * @access user
+ */
+
+routes.get('/', authenticateMiddleware, listAllProducts)
+
+/*
+* @method GET
+* @router /api/product/seller
+* @description Read all the listed and unlisted products from DB
+* @access seller
+*/
+
+router.get('/seller',authenticateMiddleware,authenticalSeller,listAllProductToSeller)
+
+/**
+ * @method PATCH
+ * @route /api/products/unlist/:id
+ * @description Unlist a product by its ID
+ * @access seller
+ */
+
+router.patch('/unlist/:id', authenticateMiddleware, authenticalSeller, unlistProductValidator, unlistProduct)
+
+/**
+ * @method PATCH
+ * @route /api/products/list/:id
+ * @description list a product by its ID
+ * @access seller
+ */
+
+router.patch('list/:id', authenticateMiddleware, authenticalSeller, listProductValidator, listProduct)
+
+
 
 
 export default routes
