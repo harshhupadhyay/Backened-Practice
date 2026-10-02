@@ -1,7 +1,7 @@
 import cartModel from "../models/cart.model.js"
 import productModel from "../models/product.model.js"
 
-export const  addToCart =  async (req, res) => {
+export const addToCart = async (req, res) => {
 
   const { productId, quantity, size } = req.body
 
@@ -57,10 +57,10 @@ export const  addToCart =  async (req, res) => {
 
       }
     )
-
     return res.status(200).json({
       message: "Product quantity updated in cart"
     })
+
 
   }
 
@@ -77,21 +77,24 @@ export const  addToCart =  async (req, res) => {
       }
     }
   )
+  return res.status(200).json({
+    message: "Product added to cart"
+  })
 
 
 }
 
-export const  getCart = async(req,res)=>{
+export const getCart = async (req, res) => {
 
-  const  cart= (await cartModel.findOne({user: req.user.userId})) ??(await cartModel.create({user: req.user.userId}))
+  const cart = (await cartModel.findOne({ user: req.user.userId })) ?? (await cartModel.create({ user: req.user.userId }))
 
   return res.status(200).json({
-        message: "Cart retrieved successfully",
-        data: {
-            cart: cart
-        }
-    });
+    message: "Cart retrieved successfully",
+    data: {
+      cart: cart
+    }
+  });
 
-  
+
 
 }
