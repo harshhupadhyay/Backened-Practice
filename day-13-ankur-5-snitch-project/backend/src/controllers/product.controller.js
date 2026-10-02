@@ -51,3 +51,26 @@ export const getMeProduct = async(req,res)=>{
     data: product
   })
 }
+
+export const unlistProduct = async (req, res) => {
+
+  const { id } = req.params
+
+  const product = await productModel.findOne(id)
+
+  if (!product) {
+
+    res.status(404).json({
+      message: "product is not found by id"
+    })
+  }
+// –––––––––––––––––– make product unPublished –––––––––––––––––––––
+  await productModel.findOneAndUpdate(id, {
+    published: false
+  })
+
+  return res.status(200).json({
+    message: "Product unpublished successfully"
+  })
+
+}
