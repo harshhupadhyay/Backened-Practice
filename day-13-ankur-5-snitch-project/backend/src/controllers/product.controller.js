@@ -61,7 +61,7 @@ export const listAllProductToSeller = async (req, res) => {
   return res.status(200).json({
     message: "All products fetched successfully",
     data: {
-      products
+      product
     }
   })
 
