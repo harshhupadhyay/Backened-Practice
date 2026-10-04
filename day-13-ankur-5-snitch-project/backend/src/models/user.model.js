@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 
 const userSchema = new mongoose.Schema({
-  
+
     email: {
         type: String,
         required: true,
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "user",
-        enum: [ "user", "seller" ]
+        enum: [ "user", "admin" ]
     },
     refreshToken: {
         type: String

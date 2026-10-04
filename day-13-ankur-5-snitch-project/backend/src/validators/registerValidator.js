@@ -20,15 +20,17 @@ export const registerValidator = [
 
   (req, res, next) => {
 
-    const validationErrors = validationResult(req)
+    const errorValidator = validationResult(req)
 
-    if (!validationErrors.isEmpty()) {
-
-      return res.status(400).json({
+    if (!errorValidator.isEmpty()) {
+      return req.status(400).json({
         message: "Invalid Request",
-        errors: validationErrors.array()
+        errors: errorValidator.array()
       })
     }
+
     next()
+
   }
+
 ]
