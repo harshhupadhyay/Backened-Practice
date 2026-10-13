@@ -5,6 +5,7 @@ const {
   createRestaurant,
   updateRestaurant,
   deleteRestaurant,
+  getRestaurentRevenue
 } = require("../controllers/restaurant.controller");
 const { getMenu, createMenuItem, updateMenuItem, deleteMenuItem } = require("../controllers/menu.controller");
 const { getRestaurantOrders } = require("../controllers/order.controller");
@@ -28,6 +29,9 @@ router.delete("/:id/menu/:itemId", authUser, authorize("owner"), deleteMenuItem)
 
 // Orders of a restaurant (owner dashboard)
 router.get("/:id/orders", authUser, authorize("owner"), getRestaurantOrders);
+
+//revenue of restaurant (Owner dasboard)
+router.get('/:id/revenue',authUser,authorize("owner"),getRestaurentRevenue)
 
 // Reviews of a restaurant
 router.get("/:id/reviews", getRestaurantReviews);

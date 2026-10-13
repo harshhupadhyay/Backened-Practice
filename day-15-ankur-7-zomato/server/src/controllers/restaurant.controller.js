@@ -107,6 +107,10 @@ async function deleteRestaurant(req, res) {
   res.json({ message: "Restaurant deleted" });
 }
 
+//get /api/restaurant/:id/revenue (owner, own restaurant only)
+
+
+
 module.exports = {
   getRestaurants,
   getRestaurantById,
